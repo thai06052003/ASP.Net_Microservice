@@ -1,0 +1,4 @@
+(dependencies)
+application -> core
+infratructure -> appli
+api -> appli - infras
