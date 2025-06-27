@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using System.Text.Json;
 
-namespace Catalog.infrastructure.Data
+namespace Catalog.Infrastructure.Data
 {
     public static class CatalogContextSeed
     {
@@ -10,6 +10,7 @@ namespace Catalog.infrastructure.Data
         {
             bool checkProducts = productCollection.Find(b => true).Any();
             string path = Path.Combine("Data", "SeedData", "products.json");
+            //string path = "../Catalog.infrastructure/Data/SeedData/products.json";
             if (!checkProducts)
             {
                 var productsData = File.ReadAllText(path);

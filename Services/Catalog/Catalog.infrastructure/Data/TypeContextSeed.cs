@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using System.Text.Json;
 
-namespace Catalog.infrastructure.Data
+namespace Catalog.Infrastructure.Data
 {
     public static class TypeContextSeed
     {
@@ -10,6 +10,7 @@ namespace Catalog.infrastructure.Data
         {
             bool checkTypes = typeCollection.Find(b => true).Any();
             string path = Path.Combine("Data", "SeedData", "types.json");
+            //string path = "../Catalog.infrastructure/Data/SeedData/types.json";
             if (!checkTypes)
             {
                 var typesData = File.ReadAllText(path);

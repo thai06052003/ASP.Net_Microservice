@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Amazon.Runtime.Internal;
+using Catalog.Application.Responses;
+using MediatR;
 
 namespace Catalog.Application.Queries
 {
-    internal class GetAllTypesQuery
+    public class GetAllTypesQuery : IRequest<IList<TypesResponse>>
     {
+
     }
 }
