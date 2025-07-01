@@ -1,4 +1,0 @@
-CatalogController.cs 
-→ GetAllProductsHandler.cs (hoặc CatalogService.cs) 
-→ ProductRepository.cs 
-→ CatalogContext.cs
