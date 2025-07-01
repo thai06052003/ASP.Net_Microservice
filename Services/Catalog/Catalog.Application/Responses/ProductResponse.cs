@@ -1,5 +1,4 @@
-﻿
-using Catalog.Core.Entities;
+﻿using Catalog.Core.Entities;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catalog.Application.Responses

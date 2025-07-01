@@ -1,4 +1,5 @@
-﻿using Catalog.Application.Mappers;
+﻿using AutoMapper;
+using Catalog.Application.Mappers;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
 using Catalog.Core.Entities;
@@ -7,20 +8,19 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
-    public class GetAllBrandsHandler : IRequestHandler<GetAllBrandsQuery, IList<BrandsResponse>>
+    public class GetAllBrandsHandler : IRequestHandler<GetAllBrandsQuery, IList<BrandResponse>>
     {
         private readonly IBrandRepository _brandRepository;
-
-        public GetAllBrandsHandler(IBrandRepository brandRepository) 
+        
+        public GetAllBrandsHandler(IBrandRepository brandRepository)
         {
             _brandRepository = brandRepository;
         }
-
-        public async Task<IList<BrandsResponse>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
+        public async Task<IList<BrandResponse>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
         {
             var brandList = await _brandRepository.GetAllBrands();
-            var brandReposnseList = ProductMapper.Mapper.Map<IList<ProductBrand>, IList<BrandsResponse>>(brandList.ToList());
-            return brandReposnseList;
+            var brandResponseList = ProductMapper.Mapper.Map<IList<ProductBrand>,IList<BrandResponse>>(brandList.ToList());
+            return brandResponseList;
         }
     }
 }

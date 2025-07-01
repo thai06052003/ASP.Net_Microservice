@@ -11,6 +11,6 @@ namespace Catalog.Application.Queries
         {
             CatalogSpecParams = catalogSpecParams;
         }
-
+        
     }
 }

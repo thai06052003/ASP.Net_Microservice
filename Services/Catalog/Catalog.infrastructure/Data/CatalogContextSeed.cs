@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System.Text.Json;
 
+
 namespace Catalog.Infrastructure.Data
 {
     public static class CatalogContextSeed
@@ -10,12 +11,11 @@ namespace Catalog.Infrastructure.Data
         {
             bool checkProducts = productCollection.Find(b => true).Any();
             string path = Path.Combine("Data", "SeedData", "products.json");
-            //string path = "../Catalog.infrastructure/Data/SeedData/products.json";
             if (!checkProducts)
             {
-                var productsData = File.ReadAllText(path);
+                 var productsData = File.ReadAllText(path);
+                //var productsData = File.ReadAllText("../Catalog.Infrastructure/Data/SeedData/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
-
                 if (products != null)
                 {
                     foreach (var item in products)

@@ -2,7 +2,7 @@
 
 namespace Catalog.Core.Repositories
 {
-    public interface ITypeRepository
+    public interface ITypesRepository
     {
         Task<IEnumerable<ProductType>> GetAllTypes();
     }

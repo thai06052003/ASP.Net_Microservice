@@ -7,23 +7,26 @@ using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository, IBrandRepository, ITypeRepository
+    public class ProductRepository : IProductRepository, IBrandRepository, ITypesRepository
     {
         public ICatalogContext _context { get; }
         public ProductRepository(ICatalogContext context)
         {
             _context = context;
         }
-        /// <summary>
-        /// Lấy ra tất cả sản phẩm
-        /// </summary>
-        /// <param name="catalogSpecParams">Điều kiện lọc</param>
-        /// <returns>Danh sách sản phẩm</returns>
-        public async Task<Pagination<Product>> GetProducts(CatalogSpecParams catalogSpecParams)
+
+        async Task<Product> IProductRepository.GetProduct(string id)
+        {
+            return await _context
+                .Products
+                .Find(p => p.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        async Task<Pagination<Product>> IProductRepository.GetProducts(CatalogSpecParams catalogSpecParams)
         {
             var builder = Builders<Product>.Filter;
-
-            var filter = Builders<Product>.Filter.Empty;
+            var filter = builder.Empty;
             if (!string.IsNullOrEmpty(catalogSpecParams.Search))
             {
                 filter = filter & builder.Where(p => p.Name.ToLower().Contains(catalogSpecParams.Search.ToLower()));
@@ -35,12 +38,11 @@ namespace Catalog.Infrastructure.Repositories
             }
             if (!string.IsNullOrEmpty(catalogSpecParams.TypeId))
             {
-                var typeFilter = builder.Eq(p => p.Types.Id, catalogSpecParams.TypeId);
-                filter &= typeFilter;
+                var TypeFilter = builder.Eq(p => p.Types.Id, catalogSpecParams.TypeId);
+                filter &= TypeFilter;
             }
             var totalItems = await _context.Products.CountDocumentsAsync(filter);
             var data = await DataFilter(catalogSpecParams, filter);
-
             return new Pagination<Product>(
                 catalogSpecParams.PageIndex,
                 catalogSpecParams.PageSize,
@@ -48,89 +50,61 @@ namespace Catalog.Infrastructure.Repositories
                 data
             );
         }
-        /// <summary>
-        /// Lấy ra sản phẩm tương ứng với id
-        /// </summary>
-        /// <param name="id">ID sản phẩm</param>
-        /// <returns>Sản phẩm tương ứng</returns>
-        public async Task<Product> GetProduct(string id)
+
+        async Task<IEnumerable<Product>> IProductRepository.GetProductsByBrand(string brandName)
         {
-            return await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
+            return await _context
+                .Products
+                .Find(p => p.Brands.Name.ToLower() == brandName.ToLower())
+                .ToListAsync();
         }
-        /// <summary>
-        /// Lấy ra danh sách sản phẩm tương ứng với tên sản phẩm tìm kiếm
-        /// </summary>
-        /// <param name="name">Tên sản phẩm tím kiếm</param>
-        /// <returns>Danh sách tên sản phẩm tương ứng</returns>
-        public async Task<IEnumerable<Product>> GetProductsByName(string name)
+
+        async Task<IEnumerable<Product>> IProductRepository.GetProductsByName(string name)
         {
-            return await _context.Products.Find(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
+            return await _context
+                .Products
+                .Find(p => p.Name.ToLower() == name.ToLower())
+                .ToListAsync();
         }
-        /// <summary>
-        /// Lấy ra danh sách sản phẩm tương ứng với thương hiệu sản phẩm tìm kiếm
-        /// </summary>
-        /// <param name="brandName">Thương hiệu sản phẩm tím kiếm</param>
-        /// <returns>Danh sách thương hiệu sản phẩm tương ứng</returns>
-        public async Task<IEnumerable<Product>> GetProductsByBrand(string brandName)
-        {
-            return await _context.Products.Find(p => p.Brands.Name.ToLower() == brandName.ToLower()).ToListAsync();
-        }
-        /// <summary>
-        /// Tạo sản phẩm mới
-        /// </summary>
-        /// <param name="product">Sản phẩm được tạo</param>
-        /// <returns>Sản phẩm được tạo</returns>
-        public async Task<Product> CreateProduct(Product product)
+        async Task<Product> IProductRepository.CreateProduct(Product product)
         {
             await _context.Products.InsertOneAsync(product);
             return product;
         }
-        /// <summary>
-        /// Xóa sản phẩm
-        /// </summary>
-        /// <param name="id">ID sản phẩm bị xóa</param>
-        /// <returns>True nếu xóa được; False nếu không xóa được</returns>
-        public async Task<bool> DeleteProduct(string id)
+
+        async Task<bool> IProductRepository.DeleteProduct(string id)
         {
-            var deletedProduct = await _context.Products.DeleteOneAsync(p => p.Id == id);
+            var deletedProduct = await _context
+                .Products
+                .DeleteOneAsync(p => p.Id == id);
             return deletedProduct.IsAcknowledged && deletedProduct.DeletedCount > 0;
         }
-        /// <summary>
-        /// Cập nhật sản phẩm
-        /// </summary>
-        /// <param name="product">Thông tin sản phẩm được cập nhật</param>
-        /// <returns>True nếu xóa được; False nếu không xóa được</returns>
-        public async Task<bool> UpdateProduct(Product product)
+        async Task<bool> IProductRepository.UpdateProduct(Product product)
         {
-            var updateProduct = await _context.Products.ReplaceOneAsync(p => p.Id == product.Id, product);
-            return updateProduct.IsAcknowledged && updateProduct.ModifiedCount > 0;
+            var updatedProduct = await _context
+                .Products
+                .ReplaceOneAsync(p => p.Id == product.Id, product);
+            return updatedProduct.IsAcknowledged && updatedProduct.ModifiedCount > 0;
         }
-        /// <summary>
-        /// Lấy ra danh sách thể loại
-        /// </summary>
-        /// <returns>Danh sách thể loại</returns>
-        public async Task<IEnumerable<ProductType>> GetAllTypes()
+        async Task<IEnumerable<ProductBrand>> IBrandRepository.GetAllBrands()
         {
-            return await _context.Types.Find(t => true).ToListAsync();
+            return await _context
+                .Brands
+                .Find(brand => true)
+                .ToListAsync();
         }
-        /// <summary>
-        /// Danh sách thương hiệu
-        /// </summary>
-        /// <returns>Danh sách thương hiệu</returns>
 
-        public async Task<IEnumerable<ProductBrand>> GetAllBrands()
+        async Task<IEnumerable<ProductType>> ITypesRepository.GetAllTypes()
         {
-            return await _context.Brands.Find(b => true).ToListAsync();
+            return await _context
+                .Types
+                .Find(type => true)
+                .ToListAsync();
         }
-        /// <summary>
-        /// Thực hiện lọc và sắp xếp sản phẩm
-        /// </summary>
-        /// <param name="catalogSpecParams">Điều kiện lọc</param>
-        /// <param name="filter">câu truy vấn</param>
-        /// <returns>Danh sách sản phẩm tương ứng</returns>
+
         private async Task<IReadOnlyList<Product>> DataFilter(CatalogSpecParams catalogSpecParams, FilterDefinition<Product> filter)
         {
-            var sortDefn = Builders<Product>.Sort.Ascending("Name");
+            var sortDefn = Builders<Product>.Sort.Ascending("Name"); // Default
             if (!string.IsNullOrEmpty(catalogSpecParams.Sort))
             {
                 switch (catalogSpecParams.Sort)
@@ -144,14 +118,18 @@ namespace Catalog.Infrastructure.Repositories
                     default:
                         sortDefn = Builders<Product>.Sort.Ascending(p => p.Name);
                         break;
+
                 }
             }
-            return await _context.Products
-                .Find(filter)
-                .Sort(sortDefn)
-                .Skip(catalogSpecParams.PageSize * (catalogSpecParams.PageIndex - 1))
-                .Limit(catalogSpecParams.PageSize)
-                .ToListAsync();
+            return await _context
+            .Products
+            .Find(filter)
+            .Sort(sortDefn)
+            .Skip(catalogSpecParams.PageSize * (catalogSpecParams.PageIndex - 1))
+            .Limit(catalogSpecParams.PageSize)
+            .ToListAsync();
         }
+
+
     }
 }

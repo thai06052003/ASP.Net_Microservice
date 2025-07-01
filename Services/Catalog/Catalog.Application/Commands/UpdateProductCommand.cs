@@ -1,7 +1,7 @@
 ﻿using Catalog.Core.Entities;
 using MediatR;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Catalog.Application.Commands
 {

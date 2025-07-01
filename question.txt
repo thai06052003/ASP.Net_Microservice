@@ -2,3 +2,5 @@
 application -> core
 infratructure -> appli
 api -> appli - infras
+
+docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
