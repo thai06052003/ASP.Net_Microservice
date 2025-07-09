@@ -1,7 +1,7 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
 # Created by https://www.gitignore.io/api/macos
-.LuongSuKien.txt
-.question.txt
+./question.txt
+./LuongSuKien.txt
 ### macOS ###
 *.DS_Store
 .AppleDouble

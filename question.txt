@@ -6,3 +6,4 @@ api -> appli - infras
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 docker-compose down
 dotnet ef migrations add InitialCreate -p ../Ordering.Infrastructue -s ../Ordering.API -c OrderContext
+

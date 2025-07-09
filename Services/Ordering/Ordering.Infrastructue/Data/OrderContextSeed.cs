@@ -30,10 +30,10 @@ namespace Ordering.Infrastructue.Data
                     FirstName = "Thai",
                     LastName = "Dinh Xuan",
                     EmailAddress = "xuanthai@eCommerce.net",
-                    AddressLine = "Hue City",
+                    AddressLine = "123 Hồ Đắc Di",
                     Country = "VietNam",
                     TotalPrice = 750,
-                    State = "KA",
+                    State = "Hue city",
                     ZipCode = "730006",
 
                     CardName = "Visa",
