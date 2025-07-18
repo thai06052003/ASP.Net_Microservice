@@ -8,6 +8,7 @@ using System.Net;
 
 namespace Catalog.API.Controllers
 {
+    // Định nghĩa các endpoint
     public class CatalogController : ApiController
     {
         private readonly IMediator _mediator;
@@ -32,7 +33,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet]
         [Route("[action]/{productName}", Name = "GetProductByProductName")]
-        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]        
+        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IList<ProductResponse>>> GetProductByProductName(string productName)
         {
             var query = new GetProductByNameQuery(productName);
@@ -44,7 +45,7 @@ namespace Catalog.API.Controllers
         [HttpGet]
         [Route("GetAllProducts")]
         [ProducesResponseType(typeof(Pagination<ProductResponse>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts([FromQuery]CatalogSpecParams catalogSpecParams)
+        public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts([FromQuery] CatalogSpecParams catalogSpecParams)
         {
             var query = new GetAllProductsQuery(catalogSpecParams);
             var result = await _mediator.Send(query);

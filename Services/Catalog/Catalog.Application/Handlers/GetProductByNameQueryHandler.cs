@@ -6,6 +6,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic lấy sản phẩm dựa trên tên sản phẩm
     public class GetProductByNameQueryHandler : IRequestHandler<GetProductByNameQuery, IList<ProductResponse>>
     {
         private readonly IProductRepository _productRepository;

@@ -5,6 +5,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic cập nhật sản phẩm
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private readonly IProductRepository _productRepository;

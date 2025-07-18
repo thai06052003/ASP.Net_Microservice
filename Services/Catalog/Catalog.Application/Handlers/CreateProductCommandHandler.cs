@@ -7,6 +7,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic thêm sản phẩm
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductResponse>
     {
         private readonly IProductRepository _productRepository;
@@ -18,7 +19,7 @@ namespace Catalog.Application.Handlers
         public async Task<ProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var productEntity = ProductMapper.Mapper.Map<Product>(request);
-            if (productEntity is null) 
+            if (productEntity is null)
             {
                 throw new ApplicationException("There is an issue with mapping while creating new product");
             }

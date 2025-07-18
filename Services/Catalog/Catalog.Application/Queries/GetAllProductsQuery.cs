@@ -4,6 +4,7 @@ using MediatR;
 
 namespace Catalog.Application.Queries
 {
+    // DTO để lấy dữ liệu
     public class GetAllProductsQuery : IRequest<Pagination<ProductResponse>>
     {
         public CatalogSpecParams CatalogSpecParams { get; set; }

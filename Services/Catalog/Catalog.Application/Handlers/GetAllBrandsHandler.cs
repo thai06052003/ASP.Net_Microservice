@@ -8,6 +8,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic lấy ra tất cả Brand
     public class GetAllBrandsHandler : IRequestHandler<GetAllBrandsQuery, IList<BrandResponse>>
     {
         private readonly IBrandRepository _brandRepository;

@@ -5,6 +5,7 @@ using System.Text.Json;
 
 namespace Catalog.Infrastructure.Data
 {
+    // Đưa dữ liệu trong folder SeedData vào DB
     public static class CatalogContextSeed
     {
         public static void SeedData(IMongoCollection<Product> productCollection)
@@ -13,8 +14,7 @@ namespace Catalog.Infrastructure.Data
             string path = Path.Combine("Data", "SeedData", "products.json");
             if (!checkProducts)
             {
-                 var productsData = File.ReadAllText(path);
-                //var productsData = File.ReadAllText("../Catalog.Infrastructure/Data/SeedData/products.json");
+                var productsData = File.ReadAllText(path);
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
                 if (products != null)
                 {

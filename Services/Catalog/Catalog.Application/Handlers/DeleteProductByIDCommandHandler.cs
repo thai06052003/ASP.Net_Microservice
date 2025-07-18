@@ -4,6 +4,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic xóa sản phẩm
     public class DeleteProductByIDCommandHandler : IRequestHandler<DeleteProductByIdCommand, bool>
     {
         private readonly IProductRepository _productRepository;

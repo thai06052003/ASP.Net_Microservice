@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catalog.Application.Responses
 {
+    // DTO để trả về cho API
     public class ProductResponse
     {
         [BsonId]

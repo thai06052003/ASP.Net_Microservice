@@ -6,6 +6,7 @@ using Catalog.Core.Specs;
 
 namespace Catalog.Application.Mappers
 {
+    // Định nghĩa cấu hình AutoMapper giữa entity và response/command
     public class ProductMappingProfile : Profile
     {
         public ProductMappingProfile()

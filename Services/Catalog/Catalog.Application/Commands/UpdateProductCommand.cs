@@ -5,6 +5,7 @@ using MongoDB.Bson;
 
 namespace Catalog.Application.Commands
 {
+    // DTO để update
     public class UpdateProductCommand : IRequest<bool>
     {
         [BsonId]

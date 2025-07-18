@@ -2,6 +2,7 @@
 
 namespace Catalog.Application.Mappers
 {
+    // Tạo một instance duy nhất
     public static class ProductMapper
     {
         private static readonly Lazy<IMapper> Lazy = new Lazy<IMapper>(() =>

@@ -7,6 +7,7 @@ using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Repositories
 {
+    // Triển khai các interface ở Core
     public class ProductRepository : IProductRepository, IBrandRepository, ITypesRepository
     {
         public ICatalogContext _context { get; }

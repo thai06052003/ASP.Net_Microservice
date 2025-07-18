@@ -6,6 +6,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic lấy ra product dựa trên id sản phẩm
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductResponse>
     {
         private readonly IProductRepository _productRepository;

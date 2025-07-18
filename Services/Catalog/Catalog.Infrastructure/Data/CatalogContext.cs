@@ -6,6 +6,7 @@ using MongoDB.Driver;
 
 namespace Catalog.Infrastructure.Data
 {
+    // Cấu hình kết nối MongoDB, khởi tạo collection
     public class CatalogContext : ICatalogContext
     {
         public IMongoCollection<Product> Products { get; }

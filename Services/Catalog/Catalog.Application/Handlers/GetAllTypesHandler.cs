@@ -6,6 +6,7 @@ using MediatR;
 
 namespace Catalog.Application.Handlers
 {
+    // Xử lí logic lấy ra tất cả type
     public class GetAllTypesHandler : IRequestHandler<GetAllTypesQuery, IList<TypesResponse>>
     {
         private readonly ITypesRepository _typesRepository;
