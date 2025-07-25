@@ -9,7 +9,7 @@ import { StoreService } from '../store.service';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.scss'],
+  styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
   product?: IProduct;
@@ -20,38 +20,38 @@ export class ProductDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private bcService: BreadcrumbService,
     private basketService: BasketService
-  ) {}
+    ){}
 
   ngOnInit(): void {
     this.loadProduct();
   }
 
-  loadProduct() {
+  loadProduct(){
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) {
+    if(id){
       this.storeService.getProductById(id).subscribe({
-        next: (response) => {
+        next:(response) =>{
           this.product = response;
           this.bcService.set('@productDetails', response.name);
-        },
-        error: (error) => console.log(error),
+          }, error:(error)=>console.log(error)
       });
     }
   }
 
-  addItemToCart() {
-    if (this.product) {
+  addItemToCart(){
+    if(this.product){
       this.basketService.addItemToBasket(this.product, this.quantity);
     }
   }
 
-  incrementQuantity() {
+  incrementQuantity(){
     this.quantity++;
   }
 
-  decrementQuantity() {
-    if (this.quantity > 1) {
+  decrementQuantity(){
+    if(this.quantity>1){
       this.quantity--;
     }
   }
+
 }

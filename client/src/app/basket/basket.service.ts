@@ -10,7 +10,7 @@ import { IProduct } from '../shared/models/product';
   providedIn: 'root'
 })
 export class BasketService {
-  baseUrl = 'http://localhost:8001/api/v1';
+  baseUrl = 'http://localhost:8010';
   constructor(private http: HttpClient, private acntService: AcntService, private router: Router) { }
   private basketSource = new BehaviorSubject<Basket | null>(null);
   basketSource$ = this.basketSource.asObservable();
@@ -18,13 +18,15 @@ export class BasketService {
   basketTotal$ = this.basketTotal.asObservable();
 
   getBasket(username: string){
-    return this.http.get<IBasket>(this.baseUrl+'/Basket/GetBasket/thai').subscribe({
-      //update the basketsource so that via observable these values will be available to the subscribers via component
-      next:basket=>{
-        this.basketSource.next(basket);
-        this.calculateBasketTotal();
-      }
-    });
+    return this.http
+      .get<IBasket>(this.baseUrl + '/Basket/GetBasket/thai')
+      .subscribe({
+        //update the basketsource so that via observable these values will be available to the subscribers via component
+        next: (basket) => {
+          this.basketSource.next(basket);
+          this.calculateBasketTotal();
+        },
+      });
   }
   setBasket(basket: IBasket){
     return this.http.post<IBasket>(this.baseUrl +'/Basket/CreateBasket', basket).subscribe({
@@ -35,11 +37,12 @@ export class BasketService {
     });
   }
 
-  checkoutBasket(basket: IBasket){
+  async checkoutBasket(basket: IBasket){
+    const token = await this.acntService.authorizationHeaderValue;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization': this.acntService.authorizationHeaderValue
+        'Authorization': token
       })
     };
     return this.http.post<IBasket>('http://localhost:8001/api/v2/Basket/Checkout', basket, httpOptions).subscribe({
@@ -126,7 +129,7 @@ export class BasketService {
   private createBasket(): Basket {
     //since we have created class
     const basket = new Basket();
-    localStorage.setItem('basket_username', 'rahul'); //TODO: rahul can be replaced with LoggedIn User
+    localStorage.setItem('basket_username', 'thai'); //TODO: thai can be replaced with LoggedIn User
     return basket;
   }
 
